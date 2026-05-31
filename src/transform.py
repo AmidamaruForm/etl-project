@@ -1,6 +1,8 @@
 import json
 import pandas as pd
 from pathlib import Path
+from datetime import datetime
+
 
 def get_latest_raw_file():
     raw_folder = Path("data/raw")
@@ -42,6 +44,16 @@ def transform_data(df):
 
     transformed_df = df[selected_columns]
 
+    transformed_df = transformed_df.rename(
+        columns={
+            "id": "coin_id",
+            "name": "coin_name"
+        }
+    )
+
+    transformed_df["load_timestamp"] = datetime.now()
+
+    
     return transformed_df
 
 def save_processed_data(df):
