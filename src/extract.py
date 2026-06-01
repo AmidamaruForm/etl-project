@@ -1,7 +1,7 @@
 import requests
 import json
 from datetime import datetime
-
+from config.logger import logger
 
 def get_market_data():
     """
@@ -23,6 +23,11 @@ def get_market_data():
     )
 
     if response.status_code != 200:
+
+        logger.error(
+            f"API request failed. Status code: {response.status_code}"
+        )
+
         raise Exception(
             f"API request failed. Status code: {response.status_code}"
         )
@@ -55,7 +60,7 @@ def save_raw_data(data):
             indent=4
         )
 
-    print(f"File saved: {filepath}")
+    logger.info(f"File saved: {filepath}")
 
 
 def extract():
@@ -63,7 +68,7 @@ def extract():
     Main extraction workflow.
     """
 
-    print("Starting extraction...")
+    logger.info("Starting extraction")
 
     data = get_market_data()
 

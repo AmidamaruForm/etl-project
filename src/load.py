@@ -1,5 +1,6 @@
 import pandas as pd
 from sqlalchemy import create_engine
+from config.logger import logger
 
 from config.db_config import (
     DB_HOST,
@@ -38,11 +39,11 @@ def load_to_database(df, engine):
         index=False
     )
 
-    print(f"Inserted {len(df)} rows")
+    logger.info(f"Inserted {len(df)} rows")
 
 def load():
 
-    print("Starting load process")
+    logger.info("Starting load process")
 
     df = read_processed_data()
 
@@ -57,7 +58,7 @@ def load():
 
     load_to_database(df, engine)
 
-    print("Load completed")
+    logger.info("Load completed")
 
 if __name__ == "__main__":
     load()

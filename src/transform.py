@@ -2,7 +2,7 @@ import json
 import pandas as pd
 from pathlib import Path
 from datetime import datetime
-
+from config.logger import logger
 
 def get_latest_raw_file():
     raw_folder = Path("data/raw")
@@ -10,6 +10,7 @@ def get_latest_raw_file():
     files = list(raw_folder.glob("*.json"))
 
     if not files:
+        logger.error("No raw files found")
         raise Exception("No raw files found")
 
     latest_file = max(files, key=lambda file: file.stat().st_mtime)
@@ -71,7 +72,7 @@ def transform():
 
     latest_file = get_latest_raw_file()
 
-    print(f"Using file: {latest_file}")
+    logger.info(f"Using raw file: {latest_file}")
 
     raw_data = read_raw_data(latest_file)
 
@@ -81,7 +82,7 @@ def transform():
 
     save_processed_data(transformed_df)
 
-    print(f"Processed {len(transformed_df)} rows")
+    logger.info(f"Processed {len(transformed_df)} rows")
 
 if __name__ == "__main__":
     transform()
